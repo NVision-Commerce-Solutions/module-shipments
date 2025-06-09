@@ -28,54 +28,78 @@ if (!empty($shipmentsResponse)) {
     <table class="data table table-order-items history" id="my-orders-table">
         <thead>
         <tr>
-            <th scope="col" class="col id">
-                <a href="<?= $this->getSortLink('No.')?>">
-                    <?= __('Shipment #') ?>
-                    <?= $this->getSortIcon('No.') ?>
-                </a>
-            </th>
-            <th scope="col" class="col date">
-                <a href="<?= $this->getSortLink('Order Date')?>">
-                    <?= __('Date') ?>
-                    <?= $this->getSortIcon('Order Date') ?>
-                </a>
-            </th>
-            <th scope="col" class="col status">
-                <a href="<?= $this->getSortLink('Order No.')?>">
-                    <?= __('From Order #') ?>
-                    <?= $this->getSortIcon('Order No.') ?>
-                </a>
-            </th>
-            <th scope="col" class="col shipping">
-                <a href="<?= $this->getSortLink('Ship-to Name')?>">
-                    <?= __('Ship To') ?>
-                    <?= $this->getSortIcon('Ship-to Name') ?>
-                </a>
-            </th>
-            <th scope="col" class="col total">
-                <a href="<?= $this->getSortLink('Ship-to Address')?>">
-                    <?= __('Address') ?>
-                    <?= $this->getSortIcon('Ship-to Address') ?>
-                </a>
-            </th>
-            <th scope="col" class="col total">
-                <a href="<?= $this->getSortLink('Ship-to City')?>">
-                    <?= __('City') ?>
-                    <?= $this->getSortIcon('Ship-to City') ?>
-                </a>
-            </th>
+            <?php if($this->isColumnExists($shipments, 'No.')): ?>
+                <th scope="col" class="col id">
+                    <a href="<?= $this->getSortLink('No.')?>">
+                        <?= __('Shipment #') ?>
+                        <?= $this->getSortIcon('No.') ?>
+                    </a>
+                </th>
+            <?php endif; ?>
+            <?php if($this->isColumnExists($shipments, 'Order Date')): ?>
+                <th scope="col" class="col date">
+                    <a href="<?= $this->getSortLink('Order Date')?>">
+                        <?= __('Date') ?>
+                        <?= $this->getSortIcon('Order Date') ?>
+                    </a>
+                </th>
+            <?php endif; ?>
+            <?php if($this->isColumnExists($shipments, 'Order No.')): ?>
+                <th scope="col" class="col status">
+                    <a href="<?= $this->getSortLink('Order No.')?>">
+                        <?= __('From Order #') ?>
+                        <?= $this->getSortIcon('Order No.') ?>
+                    </a>
+                </th>
+            <?php endif; ?>
+            <?php if($this->isColumnExists($shipments, 'Ship-to Name')): ?>
+                <th scope="col" class="col shipping">
+                    <a href="<?= $this->getSortLink('Ship-to Name')?>">
+                        <?= __('Ship To') ?>
+                        <?= $this->getSortIcon('Ship-to Name') ?>
+                    </a>
+                </th>
+            <?php endif; ?>
+            <?php if($this->isColumnExists($shipments, 'Ship-to Address')): ?>
+                <th scope="col" class="col total">
+                    <a href="<?= $this->getSortLink('Ship-to Address')?>">
+                        <?= __('Address') ?>
+                        <?= $this->getSortIcon('Ship-to Address') ?>
+                    </a>
+                </th>
+            <?php endif; ?>
+            <?php if($this->isColumnExists($shipments, 'Ship-to City')): ?>
+                <th scope="col" class="col total">
+                    <a href="<?= $this->getSortLink('Ship-to City')?>">
+                        <?= __('City') ?>
+                        <?= $this->getSortIcon('Ship-to City') ?>
+                    </a>
+                </th>
+            <?php endif; ?>
             <th scope="col" class="col actions">&nbsp</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($shipments as $shipment): ?>
             <tr>
-                <td data-th="Order #" class="col id"><?= $shipment["No."] ?></td>
-                <td data-th="Date" class="col date"><?= date_format(date_create($shipment["Order Date"]), "d-m-Y") ?></td>
-                <td data-th="Status #" class="col id"><?= $shipment["Order No."] ?></td>
-                <td data-th="Ship To #" class="col id"><?= $shipment["Ship-to Name"]?></td>
-                <td data-th="Ship To Address" class="col total"><?= $shipment["Ship-to Address"] ?></td>
-                <td data-th="Ship To City" class="col total"><?= $shipment["Ship-to City"] ?></td>
+                <?php if($this->isColumnExists($shipments, 'No.')): ?>
+                    <td data-th="Order #" class="col id"><?= $shipment["No."] ?></td>
+                <?php endif; ?>
+                <?php if($this->isColumnExists($shipments, 'Order Date')): ?>
+                    <td data-th="Date" class="col date"><?= date_format(date_create($shipment["Order Date"]), "d-m-Y") ?></td>
+                <?php endif; ?>
+                <?php if($this->isColumnExists($shipments, 'Order No.')): ?>
+                    <td data-th="Status #" class="col id"><?= $shipment["Order No."] ?></td>
+                <?php endif; ?>
+                <?php if($this->isColumnExists($shipments, '"Ship-to Name')): ?>
+                    <td data-th="Ship To #" class="col id"><?= $shipment["Ship-to Name"]?></td>
+                <?php endif; ?>
+                <?php if($this->isColumnExists($shipments, 'Ship-to Address')): ?>
+                    <td data-th="Ship To Address" class="col total"><?= $shipment["Ship-to Address"] ?></td>
+                <?php endif; ?>
+                <?php if($this->isColumnExists($shipments, 'Ship-to City')): ?>
+                    <td data-th="Ship To City" class="col total"><?= $shipment["Ship-to City"] ?></td>
+                <?php endif; ?>
                 <td data-th="Actions" class="col actions">
                     <a href="<?= $this->getViewUrl($shipment["id"]) ?>" class="action view">
                         <span><?= __("View Shipment") ?></span>

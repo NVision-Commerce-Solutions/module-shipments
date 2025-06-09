@@ -1,28 +1,29 @@
 <?php
+/** @var \Commerce365\Quotes\Block\ShipmentDetails $block */
 $shipment = $this->getShipment();
-$shipmentLines = $shipment["Lines"];
-$trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
+$shipmentLines = $block->safeGet($shipment, "Lines", []);
+$trackingUrl = $block->safeGet($shipment, 'Package Tracking URL SCNVN', '');
 ?>
 
 <div class="page-title-wrapper">
     <h1 class="page-title">
-        <span class="base" data-ui-id="page-title-wrapper"><?= __('Shipment #') ?> <?= $shipment["No."] ?> </span>
+        <span class="base" data-ui-id="page-title-wrapper"><?= __('Shipment #') ?> <?= $block->safeGet($shipment, "No.") ?> </span>
     </h1>
     <div class="order-date">
         <span class="label"><?= __('Shipment Date:') ?></span>
-        <date><?= date_format(date_create($shipment["Shipment Date"]), "d-m-Y") ?></date>
+        <date><?= date_format(date_create($block->safeGet($shipment, "Shipment Date")), "d-m-Y") ?></date>
     </div>
 </div>
 
 <div class="actions-toolbar order-actions-toolbar">
     <div class="actions">
-        <a href="<?= $shipment["PDFUrl"] ?>" class="action order" target="_blank">
+        <a href="<?= $block->safeGet($shipment, "PDFUrl") ?>" class="action order" target="_blank">
             <span><?= __('Download PDF') ?></span>
         </a>
         <?php if ($trackingUrl !== ''): ?>
-        <a href="<?php echo $trackingUrl ?>" class="action order" target="_blank">
-            <span><?php echo __('Track & Trace (By Commerce 365 for Sendcloud)') ?></span>
-        </a>
+            <a href="<?= $trackingUrl ?>" class="action order" target="_blank">
+                <span><?= __('Track & Trace (By Commerce 365 for Sendcloud)') ?></span>
+            </a>
         <?php endif; ?>
     </div>
 </div>
@@ -40,40 +41,38 @@ $trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
         <table class="data table table-order-items" id="my-orders-table">
             <caption class="table-caption"><?= __('Items Shipped') ?></caption>
             <thead>
-                <tr>
-                    <th class="col name"><?= __('Product Name') ?></th>
-                    <th class="col sku"><?= __('SKU') ?></th>
-                    <th class="col qty"><?= __('Qty') ?></th>
-                </tr>
+            <tr>
+                <th class="col name"><?= __('Product Name') ?></th>
+                <th class="col sku"><?= __('SKU') ?></th>
+                <th class="col qty"><?= __('Qty') ?></th>
+            </tr>
             </thead>
 
             <?php foreach ($shipmentLines as $shipmentLine): ?>
-            <?php
-                    $itemNo = '';
-                    if ((int)$shipmentLine["Type"] === 2) {
-                        $itemNo = $shipmentLine["No."];
-                    }
+                <?php
+                $itemNo = '';
+                if ((int)$block->safeGet($shipmentLine, "Type") === 2) {
+                    $itemNo = $block->safeGet($shipmentLine, "No.");
+                }
                 ?>
-
-            <tbody>
+                <tbody>
                 <tr id="order-item-row-1">
                     <td class="col name" data-th="Product Name">
-                        <strong class="product name product-item-name"><?= $shipmentLine["Description"]?></strong>
+                        <strong class="product name product-item-name"><?= $block->safeGet($shipmentLine, "Description") ?></strong>
                     </td>
                     <td class="col sku" data-th="SKU"><?= $itemNo ?></td>
                     <td class="col qty" data-th="Qty">
                         <ul class="items-qty">
                             <li class="item">
-                                <span class="content"><?= $shipmentLine["Quantity"] ?></span>
+                                <span class="content"><?= $block->safeGet($shipmentLine, "Quantity") ?></span>
                             </li>
                         </ul>
                     </td>
                 </tr>
-            </tbody>
+                </tbody>
             <?php endforeach; ?>
         </table>
     </div>
-
 
     <div class="actions-toolbar">
         <div class="secondary">
@@ -91,40 +90,34 @@ $trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
         <div class="box box-order-shipping-address">
             <strong class="box-title"><span><?= __('Shipping Address') ?></span></strong>
             <div class="box-content">
-                <address><?= $shipment["Ship-to Name"] ?><br />
-                    <?= $shipment["Ship-to Address"] ?><br />
-                    <?= $shipment["Ship-to City"] ?>, <?= $shipment["Ship-to Post Code"] ?><br />
-                    <?= $shipment["Ship-to Country/Region Code"] ?><br />
+                <address><?= $block->safeGet($shipment, "Ship-to Name") ?><br />
+                    <?= $block->safeGet($shipment, "Ship-to Address") ?><br />
+                    <?= $block->safeGet($shipment, "Ship-to City") ?>, <?= $block->safeGet($shipment, "Ship-to Post Code") ?><br />
+                    <?= $block->safeGet($shipment, "Ship-to Country/Region Code") ?><br />
                 </address>
             </div>
         </div>
         <div class="box box-order-shipping-method">
-            <strong class="box-title">
-                <span><?= __('Shipping Method') ?></span>
-            </strong>
+            <strong class="box-title"><span><?= __('Shipping Method') ?></span></strong>
             <div class="box-content">
-                <div><?= $shipment["Shipment Method Code"] ?></div>
+                <div><?= $block->safeGet($shipment, "Shipment Method Code") ?></div>
             </div>
         </div>
         <div class="box box-order-billing-address">
-            <strong class="box-title">
-                <span><?= __('Billing Address') ?></span>
-            </strong>
+            <strong class="box-title"><span><?= __('Billing Address') ?></span></strong>
             <div class="box-content">
-                <address><?= $shipment["Bill-to Name"] ?><br />
-                    <?= $shipment["Bill-to Address"] ?><br />
-                    <?= $shipment["Bill-to City"] ?>, <?= $shipment["Bill-to Post Code"] ?><br />
-                    <?= $shipment["Bill-to Country/Region Code"] ?><br />
+                <address><?= $block->safeGet($shipment, "Bill-to Name") ?><br />
+                    <?= $block->safeGet($shipment, "Bill-to Address") ?><br />
+                    <?= $block->safeGet($shipment, "Bill-to City") ?>, <?= $block->safeGet($shipment, "Bill-to Post Code") ?><br />
+                    <?= $block->safeGet($shipment, "Bill-to Country/Region Code") ?><br />
                 </address>
             </div>
         </div>
         <div class="box box-order-billing-method">
-            <strong class="box-title">
-                <span><?= __('Payment Method') ?></span>
-            </strong>
+            <strong class="box-title"><span><?= __('Payment Method') ?></span></strong>
             <div class="box-content">
                 <dl class="payment-method checkmemo">
-                    <?= $shipment["Payment Method Code"] ?>
+                    <?= $block->safeGet($shipment, "Payment Method Code") ?>
                 </dl>
             </div>
         </div>

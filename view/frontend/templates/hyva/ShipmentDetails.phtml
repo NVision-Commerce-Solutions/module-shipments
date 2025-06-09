@@ -7,36 +7,35 @@ use Magento\Framework\Escaper;
 /** @var Escaper $escaper */
 
 $shipment = $block->getShipment();
-$shipmentLines = $shipment["Lines"];
-$trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
+$shipmentLines = $block->safeGet($shipment, 'Lines', []);
+$trackingUrl = $block->safeGet($shipment, 'Package Tracking URL SCNVN', '');
 ?>
 
 <div class="md:flex md:justify-between items-center mb-3">
     <div class="lg:flex items-center text-center md:text-left">
         <div class="lg:inline-block">
             <h2 class="text-2xl">
-                <span><?= $escaper->escapeHtml(__('Shipment # %1', $shipment["No."])) ?></span>
+                <span><?= $escaper->escapeHtml(__('Shipment # %1', $block->safeGet($shipment, 'No.'))) ?></span>
             </h2>
             <div class="order-date">
                 <span class="label"><?= $escaper->escapeHtml(__('Shipment Date:')) ?></span>
-                <date><?= date_format(date_create($shipment["Document Date"]), "d-m-Y") ?></date>
+                <date><?= date_format(date_create($block->safeGet($shipment, 'Document Date')), "d-m-Y") ?></date>
             </div>
         </div>
     </div>
     <div class="actions">
-        <a href="<?= $shipment["PDFUrl"] ?>" class="btn btn-secondary mb-4 order" style="justify-content: center;"
-            target="_blank">
+        <a href="<?= $block->safeGet($shipment, 'PDFUrl') ?>" class="btn btn-secondary mb-4 order" style="justify-content: center;" target="_blank">
             <?= $escaper->escapeUrl(__('Download PDF')) ?>
         </a>
     </div>
 </div>
 
 <?php if ($trackingUrl !== ''): ?>
-<div class="message success message-success">
-    <a href="<?= $escaper->escapeUrl($trackingUrl) ?>" class="action order" target="_blank" rel="noopener noreferrer">
-        <span><?= $escaper->escapeHtml(__('Track & Trace (By Commerce 365 for Sendcloud)'))?></span>
-    </a>
-</div>
+    <div class="message success message-success">
+        <a href="<?= $escaper->escapeUrl($trackingUrl) ?>" class="action order" target="_blank" rel="noopener noreferrer">
+            <span><?= $escaper->escapeHtml(__('Track & Trace (By Commerce 365 for Sendcloud)'))?></span>
+        </a>
+    </div>
 <?php endif; ?>
 
 <div class="order-details-items ordered">
@@ -52,35 +51,35 @@ $trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
             <table id="my-orders-table" class="w-full">
                 <caption class="order-title sr-only"><?= $escaper->escapeHtml(__('Items Shipped')) ?></caption>
                 <thead>
-                    <tr>
-                        <th class="col name p-2 text-left"><?= __('Product Name') ?></th>
-                        <th class="col sku p-2 text-left"><?= __('SKU') ?></th>
-                        <th class="col qty p-2 text-left"><?= __('Qty') ?></th>
-                    </tr>
+                <tr>
+                    <th class="col name p-2 text-left"><?= __('Product Name') ?></th>
+                    <th class="col sku p-2 text-left"><?= __('SKU') ?></th>
+                    <th class="col qty p-2 text-left"><?= __('Qty') ?></th>
+                </tr>
                 </thead>
 
                 <?php foreach ($shipmentLines as $shipmentLine): ?>
-                <?php
+                    <?php
                     $itemNo = '';
-                    if ((int)$shipmentLine["Type"] === 2) {
-                        $itemNo = $shipmentLine["No."];
+                    if ((int)$block->safeGet($shipmentLine, 'Type') === 2) {
+                        $itemNo = $block->safeGet($shipmentLine, 'No.');
                     }
-                ?>
-                <tbody>
+                    ?>
+                    <tbody>
                     <tr id="order-item-row-1">
                         <td class="col name p-2" data-th="Product Name">
-                            <strong class="product name product-item-name"><?= $shipmentLine["Description"]?></strong>
+                            <strong class="product name product-item-name"><?= $block->safeGet($shipmentLine, 'Description') ?></strong>
                         </td>
                         <td class="col sku p-2" data-th="SKU"><?= $itemNo ?></td>
                         <td class="col qty p-2" data-th="Qty">
                             <ul class="items-qty">
                                 <li class="item">
-                                    <span class="content"><?= $shipmentLine["Quantity"] ?></span>
+                                    <span class="content"><?= $block->safeGet($shipmentLine, 'Quantity') ?></span>
                                 </li>
                             </ul>
                         </td>
                     </tr>
-                </tbody>
+                    </tbody>
                 <?php endforeach; ?>
             </table>
         </div>
@@ -102,26 +101,28 @@ $trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
             <div class="order-shipping-address">
                 <strong class="block text-lg mb-2"><?= $escaper->escapeHtml(__('Shipping Address')) ?></strong>
                 <div class="box-content">
-                    <address class="not-italic"><?= $shipment["Ship-to Name"]; ?><br />
-                        <?= $shipment["Ship-to Address"]; ?><br />
-                        <?= $shipment["Ship-to City"]; ?>, <?= $shipment["Ship-to Post Code"]; ?><br />
-                        <?= $shipment["Ship-to Country/Region Code"]; ?><br />
+                    <address class="not-italic">
+                        <?= $block->safeGet($shipment, 'Ship-to Name') ?><br />
+                        <?= $block->safeGet($shipment, 'Ship-to Address') ?><br />
+                        <?= $block->safeGet($shipment, 'Ship-to City') ?>, <?= $block->safeGet($shipment, 'Ship-to Post Code') ?><br />
+                        <?= $block->safeGet($shipment, 'Ship-to Country/Region Code') ?><br />
                     </address>
                 </div>
             </div>
             <div class="order-shipping-method">
                 <strong class="block text-lg mb-2"><?= $escaper->escapeHtml(__('Shipping Method')) ?></strong>
                 <div class="box-content">
-                    <div><?= $shipment["Shipment Method Code"]; ?></div>
+                    <div><?= $block->safeGet($shipment, 'Shipment Method Code') ?></div>
                 </div>
             </div>
             <div class="order-billing-address">
                 <strong class="block text-lg mb-2"><?= $escaper->escapeHtml(__('Billing Address')) ?></strong>
                 <div class="box-content">
-                    <address class="not-italic"><?= $shipment["Bill-to Name"]; ?><br />
-                        <?= $shipment["Bill-to Address"]; ?><br />
-                        <?= $shipment["Bill-to City"]; ?>, <?= $shipment["Bill-to Post Code"]; ?><br />
-                        <?= $shipment["Bill-to Country/Region Code"]; ?><br />
+                    <address class="not-italic">
+                        <?= $block->safeGet($shipment, 'Bill-to Name') ?><br />
+                        <?= $block->safeGet($shipment, 'Bill-to Address') ?><br />
+                        <?= $block->safeGet($shipment, 'Bill-to City') ?>, <?= $block->safeGet($shipment, 'Bill-to Post Code') ?><br />
+                        <?= $block->safeGet($shipment, 'Bill-to Country/Region Code') ?><br />
                     </address>
                 </div>
             </div>
@@ -129,7 +130,7 @@ $trackingUrl = $shipment['Package Tracking URL SCNVN'] ?? '';
                 <strong class="block text-lg mb-2"><?= $escaper->escapeHtml(__('Payment Method')) ?></strong>
                 <div class="box-content">
                     <dl class="payment-method checkmemo">
-                        <?php echo $shipment["Payment Method Code"]; ?>
+                        <?= $block->safeGet($shipment, 'Payment Method Code') ?>
                     </dl>
                 </div>
             </div>
