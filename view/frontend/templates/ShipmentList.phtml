@@ -123,13 +123,13 @@ if (!empty($shipmentsResponse)) {
     </div>
     <div>
         <?php if ($block->getPage() > 1): ?>
-        <a href="<?= $this->getPreviousPageUrl($block->getPage()) ?>" class="action order"><?= __('Previous') ?></a>
+            <a href="<?= $block->getPreviousPageUrl() ?>" class="action order"><?= __('Previous') ?></a>
         <?php endif; ?>
         <?php if ($block->getPage() > 1 && $block->getPage() < $shipmentsResponse["totalPages"]): ?>
             -
         <?php endif; ?>
         <?php if ($block->getPage() < $shipmentsResponse["totalPages"]): ?>
-            <a href="<?= $this->getNextPageUrl($block->getPage()) ?>" class="action order"><?= __('Next') ?></a>
+            <a href="<?= $block->getNextPageUrl() ?>" class="action order"><?= __('Next') ?></a>
         <?php endif; ?>
     </div>
 <?php endif; ?>

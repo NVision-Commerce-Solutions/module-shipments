@@ -1,5 +1,5 @@
 <?php
-/** @var \Commerce365\Quotes\Block\ShipmentDetails $block */
+/** @var \Commerce365\Shipments\Block\ShipmentDetails $block */
 $shipment = $this->getShipment();
 $shipmentLines = $block->safeGet($shipment, "Lines", []);
 $trackingUrl = $block->safeGet($shipment, 'Package Tracking URL SCNVN', '');
