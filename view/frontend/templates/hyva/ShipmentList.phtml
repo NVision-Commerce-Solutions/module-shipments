@@ -44,11 +44,11 @@ if (!empty($shipmentsResponse)) {
                             </a>
                         </th>
                     <?php endif; ?>
-                    <?php if($this->isColumnExists($shipments, 'Order Date')): ?>
+                    <?php if($this->isColumnExists($shipments, 'Document Date')): ?>
                         <th scope="col" class="col date p-2 text-left">
-                            <a href="<?= $block->getSortLink('Order Date')?>">
+                            <a href="<?= $block->getSortLink('Document Date')?>">
                                 <?= __('Date') ?>
-                                <?= $block->getSortIcon('Order Date') ?>
+                                <?= $block->getSortIcon('Document Date') ?>
                             </a>
                         </th>
                     <?php endif; ?>
@@ -84,7 +84,7 @@ if (!empty($shipmentsResponse)) {
                             </a>
                         </th>
                     <?php endif; ?>
-                    <th scope="col" class="col actions">&nbsp</th>
+                    <th scope="col" class="col actions text-right">&nbsp</th>
                 </tr>
             </thead>
             <tbody>
@@ -109,7 +109,7 @@ if (!empty($shipmentsResponse)) {
                     <?php if($this->isColumnExists($shipments, 'Ship-to City')): ?>
                         <td data-th="Ship To City" class="col total p-2"><?= $shipment["Ship-to City"] ?></td>
                     <?php endif; ?>
-                    <td data-th="Actions" class="col actions p-2">
+                    <td data-th="Actions" class="col actions p-2 text-right">
                         <a href="<?= $block->getViewUrl($shipment["id"]) ?>" class="action view">
                             <span><?= __("View Shipment") ?></span>
                         </a>
