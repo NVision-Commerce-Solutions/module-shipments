@@ -54,10 +54,11 @@ $trackingUrl = $block->safeGet($shipment, 'Package Tracking URL SCNVN', '');
                 <tr>
                     <th class="col name p-2 text-left"><?= __('Product Name') ?></th>
                     <th class="col sku p-2 text-left"><?= __('SKU') ?></th>
-                    <th class="col qty p-2 text-left"><?= __('Qty') ?></th>
+                    <th class="col qty p-2 text-right"><?= __('Qty') ?></th>
                 </tr>
                 </thead>
 
+                <tbody>
                 <?php foreach ($shipmentLines as $shipmentLine): ?>
                     <?php
                     $itemNo = '';
@@ -65,28 +66,27 @@ $trackingUrl = $block->safeGet($shipment, 'Package Tracking URL SCNVN', '');
                         $itemNo = $block->safeGet($shipmentLine, 'No.');
                     }
                     ?>
-                    <tbody>
-                    <tr id="order-item-row-1">
+                    <tr class="even:bg-gray-50">
                         <td class="col name p-2" data-th="Product Name">
                             <strong class="product name product-item-name"><?= $block->safeGet($shipmentLine, 'Description') ?></strong>
                         </td>
                         <td class="col sku p-2" data-th="SKU"><?= $itemNo ?></td>
-                        <td class="col qty p-2" data-th="Qty">
+                        <td class="col qty p-2 text-right" data-th="Qty">
                             <ul class="items-qty">
                                 <li class="item">
-                                    <span class="content"><?= $block->safeGet($shipmentLine, 'Quantity') ?></span>
+                                    <span class="content"><?= $block->safeGet($shipmentLine, 'Quantity') !== 0 ?: '' ?></span>
                                 </li>
                             </ul>
                         </td>
                     </tr>
-                    </tbody>
                 <?php endforeach; ?>
+                </tbody>
             </table>
         </div>
         <div class="actions-toolbar">
             <div class="secondary">
                 <a class="action back" href="/shipments/shipmentlist/">
-                    <span><?= $escaper->escapeHtml(__('Back to My Shipment')) ?></span>
+                    <span><?= $escaper->escapeHtml(__('Back to My Shipments')) ?></span>
                 </a>
             </div>
         </div>

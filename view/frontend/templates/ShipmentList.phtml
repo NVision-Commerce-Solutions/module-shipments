@@ -36,11 +36,11 @@ if (!empty($shipmentsResponse)) {
                     </a>
                 </th>
             <?php endif; ?>
-            <?php if($this->isColumnExists($shipments, 'Order Date')): ?>
+            <?php if($this->isColumnExists($shipments, 'Document Date')): ?>
                 <th scope="col" class="col date">
-                    <a href="<?= $this->getSortLink('Order Date')?>">
+                    <a href="<?= $this->getSortLink('ODocument Date')?>">
                         <?= __('Date') ?>
-                        <?= $this->getSortIcon('Order Date') ?>
+                        <?= $this->getSortIcon('Document Date') ?>
                     </a>
                 </th>
             <?php endif; ?>
