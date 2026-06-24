@@ -19,7 +19,7 @@ $trackingUrl = $block->safeGet($shipment, 'Package Tracking URL SCNVN', '');
             </h2>
             <div class="order-date">
                 <span class="label"><?= $escaper->escapeHtml(__('Shipment Date:')) ?></span>
-                <date><?= date_format(date_create($block->safeGet($shipment, 'Document Date')), "d-m-Y") ?></date>
+                <date><?= date_format(date_create($block->safeGet($shipment, 'Shipment Date')), "d-m-Y") ?></date>
             </div>
         </div>
     </div>
