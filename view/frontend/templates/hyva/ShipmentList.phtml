@@ -44,11 +44,11 @@ if (!empty($shipmentsResponse)) {
                             </a>
                         </th>
                     <?php endif; ?>
-                    <?php if($this->isColumnExists($shipments, 'Document Date')): ?>
+                    <?php if($this->isColumnExists($shipments, 'Shipment Date')): ?>
                         <th scope="col" class="col date p-2 text-left">
-                            <a href="<?= $block->getSortLink('Document Date')?>">
+                            <a href="<?= $block->getSortLink('Shipment Date')?>">
                                 <?= __('Date') ?>
-                                <?= $block->getSortIcon('Document Date') ?>
+                                <?= $block->getSortIcon('DShipment Date') ?>
                             </a>
                         </th>
                     <?php endif; ?>
@@ -93,9 +93,9 @@ if (!empty($shipmentsResponse)) {
                     <?php if($this->isColumnExists($shipments, 'No.')): ?>
                         <td data-th="Order #" class="col id p-2"><?= $shipment["No."] ?></td>
                     <?php endif; ?>
-                    <?php if($this->isColumnExists($shipments, 'Order Date')): ?>
+                    <?php if($this->isColumnExists($shipments, 'Shipment Date')): ?>
                         <td data-th="Date" class="col date p-2">
-                            <?= date_format(date_create($shipment["Order Date"]), "d-m-Y") ?></td>
+                            <?= date_format(date_create($shipment["Shipment Date"]), "d-m-Y") ?></td>
                     <?php endif; ?>
                     <?php if($this->isColumnExists($shipments, 'Order No.')): ?>
                         <td data-th="Status #" class="col id p-2"><?= $shipment["Order No."] ?></td>
